@@ -1,4 +1,4 @@
-{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
 
 <section class="hero-section relative overflow-hidden py-20 lg:py-32 bg-gradient-to-br from-primary/5 to-secondary/5">
   <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -42,62 +42,7 @@
   </div>
 </section>
 
-<style>
-  .hero-section {
-    background-color: var(--color-background);
-    padding: 6rem 0 8rem;
-  }
-
-  .hero-title {
-    font-family: var(--font-heading-family);
-    font-weight: 700;
-    font-size: 2.25rem;
-    line-height: 1.1;
-    letter-spacing: -0.025em;
-    color: var(--color-text);
-  }
-
-  .hero-subtitle {
-    margin-top: 1.5rem;
-    font-size: 1.125rem;
-    max-width: 42rem;
-    margin-left: auto;
-    margin-right: auto;
-    color: rgba(29, 29, 31, 0.8);
-  }
-
-  .hero-button {
-    display: inline-block;
-    background-color: var(--color-primary);
-    color: #ffffff;
-    font-weight: 600;
-    padding: 0.875rem 1.75rem;
-    border-radius: var(--border-radius-sloe);
-    font-size: 1.125rem;
-    text-decoration: none;
-    transition: transform 0.15s ease-in-out;
-  }
-
-  .hero-button:hover {
-    transform: scale(1.05);
-  }
-
-  @media (min-width: 640px) {
-    .hero-section {
-      padding: 8rem 0;
-    }
-
-    .hero-title {
-      font-size: 3rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .hero-title {
-      font-size: 3.75rem;
-    }
-  }
-</style>
+{% stylesheet 'section-hero.css' | asset_url | stylesheet_tag %}
 
 {% schema %}
 {

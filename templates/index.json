@@ -1,0 +1,30 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero"
+    },
+    "how_it_works": {
+      "type": "how-it-works"
+    },
+    "featured_products": {
+      "type": "featured-products"
+    },
+    "testimonials": {
+      "type": "testimonials"
+    },
+    "brand_story": {
+      "type": "brand-story"
+    },
+    "newsletter": {
+      "type": "newsletter"
+    }
+  },
+  "order": [
+    "hero",
+    "how_it_works",
+    "featured_products",
+    "testimonials",
+    "brand_story",
+    "newsletter"
+  ]
+}

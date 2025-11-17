@@ -127,65 +127,18 @@
   </div>
 </section>
 
-<style>
-  .product {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    max-width: var(--page-width);
-    margin: 0 auto;
-    padding: 2rem;
-  }
+{% stylesheet 'section-main-product.css' | asset_url | stylesheet_tag %}
 
-  .product__media img {
-    width: 100%;
-    height: auto;
-    border-radius: var(--border-radius-sloe-card);
-  }
-
-  .product__title {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    font-family: var(--font-heading-family);
-  }
-
-  .product__price {
-    margin-bottom: 1.5rem;
-  }
-
-  .price {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--color-primary);
-  }
-
-  .price__compare {
-    text-decoration: line-through;
-    color: var(--color-text);
-    opacity: 0.6;
-    margin-left: 1rem;
-  }
-
-  .product-form__cart-submit {
-    background-color: var(--color-primary);
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: var(--border-radius-sloe);
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-  }
-
-  .product-form__cart-submit:disabled {
-    background-color: var(--color-border);
-    cursor: not-allowed;
-  }
-
-  @media (max-width: 768px) {
-    .product {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+{% schema %}
+{
+  "name": "Main Product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
     }
-  }
-</style>
+  ]
+}
+{% endschema %}

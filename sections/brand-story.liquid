@@ -40,61 +40,7 @@
   </div>
 </section>
 
-<style>
-  .brand-story {
-    background-color: var(--color-background);
-    padding: 6rem 0 8rem;
-  }
-
-  .brand-story h2 {
-    font-family: var(--font-heading-family);
-    font-weight: 700;
-    font-size: 1.875rem;
-    color: var(--color-text);
-  }
-
-  .brand-story .prose p {
-    margin-bottom: 1rem;
-  }
-
-  .brand-story .prose p:last-child {
-    margin-bottom: 0;
-  }
-
-  .brand-story .btn-outline {
-    display: inline-block;
-    background-color: transparent;
-    color: var(--color-text);
-    border: 1px solid var(--color-text);
-    font-weight: 600;
-    padding: 0.875rem 1.75rem;
-    border-radius: var(--border-radius-sloe);
-    text-decoration: none;
-    transition: all 0.15s ease-in-out;
-  }
-
-  .brand-story .btn-outline:hover {
-    background-color: var(--color-text);
-    color: var(--color-background);
-  }
-
-  @media (min-width: 640px) {
-    .brand-story {
-      padding: 8rem 0;
-    }
-
-    .brand-story h2 {
-      font-size: 2.25rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .brand-story .content-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: center;
-    }
-  }
-</style>
+{% stylesheet 'section-brand-story.css' | asset_url | stylesheet_tag %}
 
 {% schema %}
 {

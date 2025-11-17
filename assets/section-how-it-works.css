@@ -1,0 +1,46 @@
+.how-it-works {
+  background-color: var(--color-background);
+  padding: 5rem 0 6rem;
+}
+
+.how-it-works h2 {
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 1.875rem;
+  color: var(--color-text);
+}
+
+.how-it-works h3 {
+  font-family: var(--font-heading-family);
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin-top: 1rem;
+}
+
+.how-it-works .step-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  background-color: var(--color-accent);
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .how-it-works {
+    padding: 6rem 0;
+  }
+
+  .how-it-works h2 {
+    font-size: 2.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .how-it-works .steps-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

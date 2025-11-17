@@ -18,26 +18,11 @@
   </div>
 </div>
 
-<style>
-  .template-404 {
-    max-width: var(--page-width);
-    margin: 0 auto;
-    padding: 4rem 2rem;
-  }
+{%- stylesheet 'section-404.css' | asset_url | stylesheet_tag -%}
 
-  .template-404__content {
-    text-align: center;
-  }
-
-  .template-404__title {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  .template-404__subtitle {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    color: var(--color-text);
-    opacity: 0.8;
-  }
-</style>
+{% schema %}
+{
+  "name": "404 Page",
+  "settings": []
+}
+{% endschema %}
