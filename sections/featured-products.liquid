@@ -1,0 +1,173 @@
+{{ 'section-featured-products.css' | asset_url | stylesheet_tag }}
+
+<section class="featured-products bg-accent py-20 sm:py-24">
+  <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-display font-bold text-3xl sm:text-4xl text-center text-text">
+      {{ section.settings.heading | default: 'Our AI-Recommended Bestsellers' }}
+    </h2>
+    
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+      {%- assign featured_collection = collections[section.settings.featured_collection] -%}
+      {%- if featured_collection != blank -%}
+        {%- for product in featured_collection.products limit: section.settings.products_to_show -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- comment -%} Fallback for when no collection is selected {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          <div class="product-card bg-background rounded-sloe-card shadow-sloe overflow-hidden flex flex-col transition-transform hover:-translate-y-2" {{ block.shopify_attributes }}>
+            {%- if block.settings.product_image != blank -%}
+              <img
+                src="{{ block.settings.product_image | image_url: width: 600 }}"
+                alt="{{ block.settings.product_name }}"
+                class="w-full h-72 object-cover"
+                width="600"
+                height="288"
+                loading="lazy"
+              >
+            {%- endif -%}
+            <div class="p-6 flex flex-col flex-1">
+              <h3 class="font-display font-semibold text-xl text-text">
+                {{ block.settings.product_name }}
+              </h3>
+              <p class="text-md font-medium text-primary mt-2">
+                {{ block.settings.product_price }}
+              </p>
+              {%- if block.settings.product_url != blank -%}
+                <a
+                  href="{{ block.settings.product_url }}"
+                  class="block mt-6 text-center w-full bg-background text-text border border-text font-semibold py-3 px-6 rounded-sloe transition-colors hover:bg-text hover:text-background"
+                >
+                  {{ block.settings.button_text | default: 'View Product' }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured-products {
+    background-color: var(--color-accent);
+    padding: 5rem 0 6rem;
+  }
+
+  .featured-products h2 {
+    font-family: var(--font-heading-family);
+    font-weight: 700;
+    font-size: 1.875rem;
+    color: var(--color-text);
+    text-align: center;
+  }
+
+  @media (min-width: 640px) {
+    .featured-products {
+      padding: 6rem 0;
+    }
+
+    .featured-products h2 {
+      font-size: 2.25rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .featured-products .products-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our AI-Recommended Bestsellers"
+    },
+    {
+      "type": "collection",
+      "id": "featured_collection",
+      "label": "Featured collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "label": "Products to show",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product (fallback)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "product_name",
+          "label": "Product name",
+          "default": "The AI-Calibrated Cleanser"
+        },
+        {
+          "type": "text",
+          "id": "product_price",
+          "label": "Product price",
+          "default": "$28.00"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product image"
+        },
+        {
+          "type": "url",
+          "id": "product_url",
+          "label": "Product URL"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "View Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured products",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "product_name": "The AI-Calibrated Cleanser",
+            "product_price": "$28.00"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "product_name": "\"Precision\" Vitamin C+ AI Serum",
+            "product_price": "$45.00"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "product_name": "\"The Routine\" Adaptive Moisturizer",
+            "product_price": "$42.00"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

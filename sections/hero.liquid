@@ -1,0 +1,141 @@
+{{ 'section-hero.css' | asset_url | stylesheet_tag }}
+
+<section class="hero-section bg-background py-24 sm:py-32">
+  <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h1 class="hero-title font-display font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-text">
+      {%- if section.settings.hero_title != blank -%}
+        {{ section.settings.hero_title }}
+      {%- else -%}
+        AI-Powered Skincare.<br>Organically Sourced.
+      {%- endif -%}
+    </h1>
+    
+    {%- if section.settings.hero_subtitle != blank -%}
+      <p class="hero-subtitle mt-6 text-lg max-w-2xl mx-auto text-text/80">
+        {{ section.settings.hero_subtitle }}
+      </p>
+    {%- endif -%}
+    
+    {%- if section.settings.hero_button_text != blank and section.settings.hero_button_url != blank -%}
+      <div class="mt-10">
+        <a
+          href="{{ section.settings.hero_button_url }}"
+          class="hero-button inline-block bg-primary text-white font-semibold py-[14px] px-[28px] rounded-sloe text-lg transition-transform hover:scale-105"
+        >
+          {{ section.settings.hero_button_text }}
+        </a>
+      </div>
+    {%- endif -%}
+    
+    {%- if section.settings.hero_image != blank -%}
+      <div class="mt-16">
+        <img
+          src="{{ section.settings.hero_image | image_url: width: 800 }}"
+          alt="{{ section.settings.hero_image.alt | default: section.settings.hero_title }}"
+          width="800"
+          height="auto"
+          class="mx-auto rounded-sloe-card shadow-sloe"
+          loading="lazy"
+        >
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    background-color: var(--color-background);
+    padding: 6rem 0 8rem;
+  }
+
+  .hero-title {
+    font-family: var(--font-heading-family);
+    font-weight: 700;
+    font-size: 2.25rem;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+  }
+
+  .hero-subtitle {
+    margin-top: 1.5rem;
+    font-size: 1.125rem;
+    max-width: 42rem;
+    margin-left: auto;
+    margin-right: auto;
+    color: rgba(29, 29, 31, 0.8);
+  }
+
+  .hero-button {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.875rem 1.75rem;
+    border-radius: var(--border-radius-sloe);
+    font-size: 1.125rem;
+    text-decoration: none;
+    transition: transform 0.15s ease-in-out;
+  }
+
+  .hero-button:hover {
+    transform: scale(1.05);
+  }
+
+  @media (min-width: 640px) {
+    .hero-section {
+      padding: 8rem 0;
+    }
+
+    .hero-title {
+      font-size: 3rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: 3.75rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hero section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "hero_title",
+      "label": "Hero title",
+      "default": "AI-Powered Skincare.<br>Organically Sourced."
+    },
+    {
+      "type": "textarea",
+      "id": "hero_subtitle",
+      "label": "Hero subtitle",
+      "default": "Stop guessing. Let our AI analyze your skin and build the perfect routine for you."
+    },
+    {
+      "type": "text",
+      "id": "hero_button_text",
+      "label": "Button text",
+      "default": "Discover Your Routine"
+    },
+    {
+      "type": "url",
+      "id": "hero_button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image (optional)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero section"
+    }
+  ]
+}
+{% endschema %}

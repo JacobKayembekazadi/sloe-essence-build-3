@@ -1,0 +1,212 @@
+{{ 'section-header.css' | asset_url | stylesheet_tag }}
+
+<header class="header sticky top-0 bg-background/80 backdrop-blur-md border-b border-border z-50">
+  <nav class="max-w-container mx-auto flex justify-between items-center py-5 px-4 sm:px-6 lg:px-8">
+    <!-- Left: Logo -->
+    <div class="flex items-center">
+      <a href="{{ routes.root_url }}" class="font-display font-bold text-2xl text-text">
+        {%- if section.settings.logo != blank -%}
+          <img src="{{ section.settings.logo | image_url: width: 150 }}" 
+               alt="{{ shop.name }}" 
+               width="150" 
+               height="auto"
+               loading="lazy">
+        {%- else -%}
+          {{ section.settings.logo_text | default: shop.name }}
+        {%- endif -%}
+      </a>
+    </div>
+
+    <!-- Center: Desktop Navigation -->
+    <div class="hidden md:flex gap-8">
+      {%- for link in section.settings.main_menu.links -%}
+        <a href="{{ link.url }}" class="nav-link text-md font-medium text-text hover:text-primary transition-colors">
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+    </div>
+
+    <!-- Right: Icons & Mobile Menu Button -->
+    <div class="flex items-center gap-4">
+      {%- if section.settings.enable_search -%}
+        <button class="hidden md:block hover:opacity-70 transition-opacity" type="button" onclick="openSearch()">
+          {% render 'icon', icon: 'search' %}
+        </button>
+      {%- endif -%}
+      
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="hover:opacity-70 transition-opacity">
+          {% render 'icon', icon: 'user' %}
+        </a>
+      {%- endif -%}
+      
+      <button class="hover:opacity-70 transition-opacity" type="button" data-cart-drawer-open>
+        {% render 'icon', icon: 'cart' %}
+        {%- if cart.item_count > 0 -%}
+          <span class="cart-count" data-cart-count>{{ cart.item_count }}</span>
+        {%- endif -%}
+      </button>
+      
+      <button
+        class="md:hidden"
+        data-mobile-menu-toggle
+        aria-label="Toggle menu"
+        aria-expanded="false"
+      >
+        <span class="menu-icon">{% render 'icon', icon: 'menu' %}</span>
+        <span class="close-icon hidden">{% render 'icon', icon: 'close' %}</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu md:hidden bg-background border-t border-border" data-mobile-menu>
+    <div class="flex flex-col space-y-4 p-4">
+      {%- for link in section.settings.main_menu.links -%}
+        <a href="{{ link.url }}" class="block py-2 text-md font-medium text-text hover:text-primary transition-colors">
+          {{ link.title }}
+        </a>
+      {%- endfor -%}
+      
+      {%- if section.settings.enable_search -%}
+        <button class="block py-2 text-md font-medium text-text hover:text-primary transition-colors text-left">
+          Search
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 50;
+  }
+
+  .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .mobile-menu {
+    display: none;
+    background-color: var(--color-background);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-menu.is-open {
+    display: block;
+  }
+
+  .mobile-menu-open .mobile-menu {
+    display: block;
+  }
+
+  .mobile-menu-open [data-mobile-menu-toggle] .menu-icon {
+    display: none;
+  }
+
+  .mobile-menu-open [data-mobile-menu-toggle] .close-icon {
+    display: block;
+  }
+
+  @media (max-width: 767px) {
+    .mobile-menu.is-open {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  // Mobile menu toggle functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuToggle = document.querySelector('[data-mobile-menu-toggle]');
+    const mobileMenu = document.querySelector('[data-mobile-menu]');
+    
+    if (mobileMenuToggle && mobileMenu) {
+      mobileMenuToggle.addEventListener('click', function() {
+        const isOpen = mobileMenu.classList.contains('is-open');
+        
+        if (isOpen) {
+          mobileMenu.classList.remove('is-open');
+          document.body.classList.remove('mobile-menu-open');
+          mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        } else {
+          mobileMenu.classList.add('is-open');
+          document.body.classList.add('mobile-menu-open');
+          mobileMenuToggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo text",
+      "default": "Sloe Essence"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_search",
+      "label": "Enable search",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

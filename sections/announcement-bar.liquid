@@ -1,0 +1,54 @@
+{{ 'section-announcement-bar.css' | asset_url | stylesheet_tag }}
+
+{%- if section.settings.enable_announcement -%}
+<div class="announcement-bar bg-primary text-white py-3 px-4 text-center text-sm font-medium">
+  {%- if section.settings.announcement_link != blank -%}
+    <a href="{{ section.settings.announcement_link }}" class="text-white hover:opacity-80 transition-opacity">
+      {{ section.settings.announcement_text | default: 'Download our skincare app today' }}
+    </a>
+  {%- else -%}
+    {{ section.settings.announcement_text | default: 'Download our skincare app today' }}
+  {%- endif -%}
+</div>
+{%- endif -%}
+
+<style>
+  .announcement-bar {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .announcement-bar a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Announcement bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_announcement",
+      "label": "Enable announcement bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Download our skincare app today"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Link (optional)"
+    }
+  ]
+}
+{% endschema %}

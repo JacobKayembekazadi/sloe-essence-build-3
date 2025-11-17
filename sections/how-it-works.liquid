@@ -1,0 +1,184 @@
+{{ 'section-how-it-works.css' | asset_url | stylesheet_tag }}
+
+<section class="how-it-works bg-background py-20 sm:py-24">
+  <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-text">
+        {{ section.settings.heading | default: 'Your Smarter Skincare Journey' }}
+      </h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="mt-4 text-lg text-text/80">
+          {{ section.settings.subheading }}
+        </p>
+      {%- endif -%}
+    </div>
+    
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+      {%- for block in section.blocks -%}
+        <div class="flex flex-col items-center" {{ block.shopify_attributes }}>
+          <div class="flex items-center justify-center w-20 h-20 bg-accent rounded-full mb-6">
+            {% render 'icon', icon: block.settings.icon %}
+          </div>
+          <span class="text-sm font-semibold text-primary uppercase tracking-wider">
+            {{ block.settings.step_label | default: 'Step ' | append: forloop.index }}
+          </span>
+          <h3 class="font-display font-semibold text-xl text-text mt-4">
+            {{ block.settings.title }}
+          </h3>
+          <p class="mt-2 text-text/80">
+            {{ block.settings.description }}
+          </p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .how-it-works {
+    background-color: var(--color-background);
+    padding: 5rem 0 6rem;
+  }
+
+  .how-it-works h2 {
+    font-family: var(--font-heading-family);
+    font-weight: 700;
+    font-size: 1.875rem;
+    color: var(--color-text);
+  }
+
+  .how-it-works h3 {
+    font-family: var(--font-heading-family);
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin-top: 1rem;
+  }
+
+  .how-it-works .step-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .how-it-works {
+      padding: 6rem 0;
+    }
+
+    .how-it-works h2 {
+      font-size: 2.25rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .how-it-works .steps-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "How it works",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your Smarter Skincare Journey"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A simple, 3-step process to find your perfect routine."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "phone",
+              "label": "Phone"
+            },
+            {
+              "value": "brain",
+              "label": "Brain"
+            },
+            {
+              "value": "bottle",
+              "label": "Bottle"
+            }
+          ],
+          "default": "phone"
+        },
+        {
+          "type": "text",
+          "id": "step_label",
+          "label": "Step label",
+          "default": "Step 1"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Scan Your Skin"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Use our free app to take a 30-second skin scan. Our technology maps your unique skin profile from your camera."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How it works",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "icon": "phone",
+            "step_label": "Step 1",
+            "title": "Scan Your Skin",
+            "description": "Use our free app to take a 30-second skin scan. Our technology maps your unique skin profile from your camera."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "brain",
+            "step_label": "Step 2",
+            "title": "Get Your Analysis",
+            "description": "Our AI instantly analyzes 12 key skin metrics, including hydration, hyperpigmentation, and pore health."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "icon": "bottle",
+            "step_label": "Step 3",
+            "title": "Receive Your Routine",
+            "description": "We build your perfect, personalized routine from our collection of organic, eco-friendly products."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

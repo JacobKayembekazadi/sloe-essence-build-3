@@ -1,0 +1,208 @@
+{{ 'section-testimonials.css' | asset_url | stylesheet_tag }}
+
+<section class="testimonials bg-background py-20 sm:py-24">
+  <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto">
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-text">
+        {{ section.settings.heading | default: 'Real results from real users' }}
+      </h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="mt-4 text-lg text-text/80">
+          {{ section.settings.subheading }}
+        </p>
+      {%- endif -%}
+    </div>
+    
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+      {%- for block in section.blocks -%}
+        <div class="testimonial-card bg-accent rounded-sloe-card shadow-sloe overflow-hidden flex flex-col" {{ block.shopify_attributes }}>
+          {%- if block.settings.before_image != blank and block.settings.after_image != blank -%}
+            <div class="grid grid-cols-2 gap-1">
+              <img 
+                src="{{ block.settings.before_image | image_url: width: 300 }}" 
+                alt="Before" 
+                class="w-full h-auto object-cover"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+              <img 
+                src="{{ block.settings.after_image | image_url: width: 300 }}" 
+                alt="After" 
+                class="w-full h-auto object-cover"
+                width="300"
+                height="300"
+                loading="lazy"
+              >
+            </div>
+          {%- endif -%}
+          
+          <div class="p-6 flex flex-col flex-1">
+            <div class="flex space-x-1 mb-4">
+              {%- assign rating = block.settings.rating | default: 5 -%}
+              {%- for i in (1..rating) -%}
+                {% render 'icon', icon: 'star' %}
+              {%- endfor -%}
+            </div>
+            
+            <blockquote class="text-lg italic text-text flex-1">
+              "{{ block.settings.quote }}"
+            </blockquote>
+            
+            <footer class="mt-4">
+              <p class="font-semibold text-text">{{ block.settings.customer_name }}</p>
+              {%- if block.settings.product_match != blank -%}
+                <p class="text-sm text-primary font-medium">{{ block.settings.product_match }}</p>
+              {%- endif -%}
+            </footer>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials {
+    background-color: var(--color-background);
+    padding: 5rem 0 6rem;
+  }
+
+  .testimonials h2 {
+    font-family: var(--font-heading-family);
+    font-weight: 700;
+    font-size: 1.875rem;
+    color: var(--color-text);
+  }
+
+  .testimonial-card {
+    background-color: var(--color-accent);
+    border-radius: var(--border-radius-sloe-card);
+    box-shadow: var(--shadow-sloe);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .testimonial-quote {
+    font-size: 1.125rem;
+    font-style: italic;
+    color: var(--color-text);
+    flex: 1;
+  }
+
+  @media (min-width: 640px) {
+    .testimonials {
+      padding: 6rem 0;
+    }
+
+    .testimonials h2 {
+      font-size: 2.25rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .testimonials .testimonials-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Real results from real users"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "See how our AI-powered routines are changing skin health."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "My hyperpigmentation faded in 2 weeks. I couldn't believe it."
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer name",
+          "default": "Sarah K, 34"
+        },
+        {
+          "type": "text",
+          "id": "product_match",
+          "label": "Product match",
+          "default": "AI-Matched for 'The Precision Serum'"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star rating",
+          "default": 5
+        },
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before image"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "My hyperpigmentation faded in 2 weeks. I couldn't believe it.",
+            "customer_name": "Sarah K, 34",
+            "product_match": "AI-Matched for 'The Precision Serum'",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "My skin has never felt this hydrated and smooth. The 'Adaptive Moisturizer' is magic.",
+            "customer_name": "Mike J, 29",
+            "product_match": "AI-Matched for 'The Routine'",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally, a cleanser that doesn't strip my skin. My breakouts are way down.",
+            "customer_name": "Emily L, 22",
+            "product_match": "AI-Matched for 'The AI-Calibrated Cleanser'",
+            "rating": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

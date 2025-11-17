@@ -1,0 +1,43 @@
+{% comment %}
+  404 Page template
+{% endcomment %}
+
+<div class="template-404 page-width">
+  <div class="template-404__content text-center">
+    <h1 class="template-404__title">
+      {{ 'templates.404.title' | t }}
+    </h1>
+    
+    <p class="template-404__subtitle">
+      {{ 'templates.404.subtext' | t }}
+    </p>
+    
+    <a href="{{ routes.root_url }}" class="button">
+      {{ 'general.breadcrumbs.home' | t }}
+    </a>
+  </div>
+</div>
+
+<style>
+  .template-404 {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .template-404__content {
+    text-align: center;
+  }
+
+  .template-404__title {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .template-404__subtitle {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    color: var(--color-text);
+    opacity: 0.8;
+  }
+</style>

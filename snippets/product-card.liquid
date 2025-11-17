@@ -1,0 +1,157 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - product: {Object} Product Liquid object
+  - show_vendor: {Boolean} Show the product vendor. Default: false
+  - show_rating: {Boolean} Show the product rating. Default: false
+  - lazy_load: {Boolean} Image should be lazy loaded. Default: true
+  
+  Usage:
+  {% render 'product-card', product: product %}
+{% endcomment %}
+
+{%- assign lazy_load = lazy_load | default: true -%}
+
+<div class="product-card bg-background rounded-sloe-card shadow-sloe overflow-hidden flex flex-col transition-transform hover:-translate-y-2" data-product-card>
+  {%- if product.featured_media -%}
+    <a href="{{ product.url }}" class="product-card__link">
+      <img
+        src="{{ product.featured_media | image_url: width: 600 }}"
+        alt="{{ product.featured_media.alt | default: product.title }}"
+        class="w-full h-72 object-cover"
+        width="600"
+        height="288"
+        {%- if lazy_load %}loading="lazy"{% endif -%}
+      >
+    </a>
+  {%- endif -%}
+  
+  <div class="p-6 flex flex-col flex-1">
+    {%- if show_vendor and product.vendor != blank -%}
+      <div class="product-card__vendor text-sm text-text/60 mb-2">
+        {{ product.vendor }}
+      </div>
+    {%- endif -%}
+    
+    <h3 class="font-display font-semibold text-xl text-text">
+      <a href="{{ product.url }}" class="product-card__title">
+        {{ product.title | escape }}
+      </a>
+    </h3>
+    
+    {%- if show_rating and product.metafields.reviews.rating.value != blank -%}
+      <div class="product-card__rating flex items-center mt-2">
+        {%- assign rating = product.metafields.reviews.rating.value.rating | round: 1 -%}
+        {%- assign rating_decimal = rating | modulo: 1 -%}
+        {%- assign rating_max = product.metafields.reviews.rating.value.scale_max | default: 5 -%}
+        
+        <div class="flex space-x-1">
+          {%- for i in (1..rating_max) -%}
+            {%- if i <= rating -%}
+              {% render 'icon', icon: 'star' %}
+            {%- elsif i == rating and rating_decimal > 0 -%}
+              {% render 'icon', icon: 'star' %}
+            {%- else -%}
+              <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+              </svg>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        
+        <span class="text-sm text-text/60 ml-2">
+          ({{ product.metafields.reviews.rating_count | default: 0 }})
+        </span>
+      </div>
+    {%- endif -%}
+    
+    <div class="product-card__price mt-2">
+      {%- if product.compare_at_price > product.price -%}
+        <span class="text-md font-medium text-primary">
+          {{ product.price | money }}
+        </span>
+        <span class="text-sm text-text/50 line-through ml-2">
+          {{ product.compare_at_price | money }}
+        </span>
+      {%- else -%}
+        <span class="text-md font-medium text-primary">
+          {{ product.price | money }}
+        </span>
+      {%- endif -%}
+    </div>
+    
+    {%- unless product.has_only_default_variant -%}
+      <div class="product-card__options mt-4">
+        {%- for option in product.options_with_values limit: 1 -%}
+          {%- if option.values.size > 1 -%}
+            <div class="text-sm text-text/60">
+              {{ option.values.size }} {{ option.name | downcase }}{% if option.values.size > 1 %}s{% endif %} available
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endunless -%}
+    
+    <div class="mt-6 mt-auto">
+      {%- if product.available -%}
+        {%- if product.has_only_default_variant -%}
+          <button
+            type="button"
+            class="block text-center w-full bg-background text-text border border-text font-semibold py-3 px-6 rounded-sloe transition-colors hover:bg-text hover:text-background"
+            data-add-to-cart
+            data-product-id="{{ product.id }}"
+            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            Add to Cart
+          </button>
+        {%- else -%}
+          <a
+            href="{{ product.url }}"
+            class="block text-center w-full bg-background text-text border border-text font-semibold py-3 px-6 rounded-sloe transition-colors hover:bg-text hover:text-background"
+          >
+            View Options
+          </a>
+        {%- endif -%}
+      {%- else -%}
+        <button
+          type="button"
+          class="block text-center w-full bg-text/20 text-text/60 border border-text/20 font-semibold py-3 px-6 rounded-sloe cursor-not-allowed"
+          disabled
+        >
+          Sold Out
+        </button>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-card {
+    background-color: var(--color-background);
+    border-radius: var(--border-radius-sloe-card);
+    box-shadow: var(--shadow-sloe);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.15s ease-in-out;
+  }
+
+  .product-card:hover {
+    transform: translateY(-0.5rem);
+  }
+
+  .product-card__link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .product-card__title {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .product-card__title:hover {
+    color: var(--color-primary);
+  }
+</style>

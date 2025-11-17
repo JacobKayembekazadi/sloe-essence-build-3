@@ -1,0 +1,185 @@
+{{ 'section-newsletter.css' | asset_url | stylesheet_tag }}
+
+<section class="newsletter bg-primary py-20 sm:py-24">
+  <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="font-display font-bold text-3xl sm:text-4xl text-white">
+      {{ section.settings.heading | default: 'Get Smarter Skin Tips (and 10% Off)' }}
+    </h2>
+    {%- if section.settings.subheading != blank -%}
+      <p class="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+        {{ section.settings.subheading }}
+      </p>
+    {%- endif -%}
+    
+    <form 
+      class="mt-10 flex flex-col sm:flex-row gap-4 max-w-lg mx-auto"
+      action="{{ routes.root_url }}contact#contact_form"
+      method="post"
+      data-newsletter-form
+    >
+      <input type="hidden" name="form_type" value="customer">
+      <input type="hidden" name="utf8" value="✓">
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      
+      <input
+        type="email"
+        name="contact[email]"
+        placeholder="{{ section.settings.email_placeholder | default: 'Enter your email' }}"
+        required
+        class="flex-1 py-[14px] px-4 rounded-sloe border-0 bg-white text-text placeholder:text-text/50 focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        aria-label="Email address"
+      />
+      
+      <button
+        type="submit"
+        class="bg-text text-white font-semibold py-[14px] px-[28px] rounded-sloe transition-colors hover:bg-text/80"
+      >
+        {{ section.settings.button_text | default: 'Subscribe' }}
+      </button>
+    </form>
+    
+    {%- if section.settings.show_privacy_notice -%}
+      <p class="mt-4 text-sm text-white/70">
+        {{ section.settings.privacy_notice | default: 'We respect your privacy. Unsubscribe at any time.' }}
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .newsletter {
+    background-color: var(--color-primary);
+    padding: 5rem 0 6rem;
+    color: #ffffff;
+  }
+
+  .newsletter h2 {
+    font-family: var(--font-heading-family);
+    font-weight: 700;
+    font-size: 1.875rem;
+    color: #ffffff;
+  }
+
+  .newsletter-form {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 32rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .newsletter-form input[type="email"] {
+    flex: 1;
+    padding: 0.875rem 1rem;
+    border-radius: var(--border-radius-sloe);
+    border: none;
+    background-color: #ffffff;
+    color: var(--color-text);
+  }
+
+  .newsletter-form input[type="email"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-primary);
+  }
+
+  .newsletter-form input[type="email"]::placeholder {
+    color: rgba(29, 29, 31, 0.5);
+  }
+
+  .newsletter-form button {
+    background-color: var(--color-text);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.875rem 1.75rem;
+    border-radius: var(--border-radius-sloe);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .newsletter-form button:hover {
+    background-color: rgba(29, 29, 31, 0.8);
+  }
+
+  .form-message {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius-sloe);
+    font-weight: 500;
+  }
+
+  .form-message--success {
+    background-color: #10b981;
+    color: #ffffff;
+  }
+
+  .form-message--error {
+    background-color: #ef4444;
+    color: #ffffff;
+  }
+
+  @media (min-width: 640px) {
+    .newsletter {
+      padding: 6rem 0;
+    }
+
+    .newsletter h2 {
+      font-size: 2.25rem;
+    }
+
+    .newsletter-form {
+      flex-direction: row;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get Smarter Skin Tips (and 10% Off)"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Join our list to get 10% off your first order, plus personalized advice and updates straight from our AI skin expert."
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "Enter your email"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_privacy_notice",
+      "label": "Show privacy notice",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "privacy_notice",
+      "label": "Privacy notice",
+      "default": "We respect your privacy. Unsubscribe at any time."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter"
+    }
+  ]
+}
+{% endschema %}
