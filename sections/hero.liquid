@@ -1,6 +1,6 @@
 {{ 'section-hero.css' | asset_url | stylesheet_tag }}
 
-<section class="hero-section bg-background py-24 sm:py-32">
+<section class="hero-section relative overflow-hidden py-20 lg:py-32 bg-gradient-to-br from-primary/5 to-secondary/5">
   <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <h1 class="hero-title font-display font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-text">
       {%- if section.settings.hero_title != blank -%}
